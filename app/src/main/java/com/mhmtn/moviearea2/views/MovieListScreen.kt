@@ -88,6 +88,7 @@ fun MovieCard(index : Int, movieList : List<Data>, navController: NavHostControl
             .wrapContentSize()
             .padding(10.dp)
             .clickable {
+             navController.navigate("movie_detail_screen/${movieList[index].id}")
             },
         elevation = CardDefaults.cardElevation(8.dp)
     ){

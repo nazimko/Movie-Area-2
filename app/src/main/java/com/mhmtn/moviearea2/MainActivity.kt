@@ -9,18 +9,22 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.mhmtn.moviearea2.ui.theme.MovieArea2Theme
 import com.mhmtn.moviearea2.viewmodel.MovieListViewModel
 import com.mhmtn.moviearea2.views.HomeScreen
+import com.mhmtn.moviearea2.views.MovieDetailScreen
 import com.mhmtn.moviearea2.views.MovieListScreen
 
 class MainActivity : ComponentActivity() {
@@ -52,7 +56,8 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     Box (
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
                             .background(linearGradientBrush)
                     ){
                         NavHost(navController = navController, startDestination = "home_screen"){
@@ -62,6 +67,19 @@ class MainActivity : ComponentActivity() {
 
                             composable("movie_list_screen"){
                                 MovieListScreen(navController = navController)
+                            }
+
+                            composable("movie_detail_screen/{id}", arguments = listOf(
+                                navArgument(
+                                    name = "id"
+                                ){
+                                    type = NavType.IntType
+                                }
+                            )){
+                                it.arguments?.getInt("id")?.let {id->
+                                    MovieDetailScreen(id = id )
+                                }
+
                             }
 
                         }

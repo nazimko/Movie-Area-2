@@ -1,6 +1,7 @@
 package com.mhmtn.moviearea2.viewmodel
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,7 @@ class MovieListViewModel : ViewModel() {
 
     private val repo = MovieRepo()
     var state by mutableStateOf(MovieListState())
+    var id by mutableIntStateOf(0)
     init {
         viewModelScope.launch {
            val response = repo.getMovieList(state.page)
@@ -21,4 +23,18 @@ class MovieListViewModel : ViewModel() {
             )
         }
     }
+
+    fun getMovieDetail(){
+        viewModelScope.launch {
+            try {
+                val response = repo.getMovieDetail(id = id)
+                if (response.isSuccessful){
+                    state = state.copy(detailsData = response.body()!!)
+                }
+            }catch (e:Exception){
+
+            }
+        }
+    }
+
 }
