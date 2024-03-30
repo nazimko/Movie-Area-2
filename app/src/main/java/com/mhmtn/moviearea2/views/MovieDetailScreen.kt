@@ -31,7 +31,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,12 +38,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.mhmtn.moviearea2.models.MovieDetail
-import com.mhmtn.moviearea2.viewmodel.MovieListViewModel
+import com.mhmtn.moviearea2.viewmodel.MovieViewModel
 
 @Composable
 fun MovieDetailScreen(id : Int) {
 
-    val viewModel = viewModel<MovieListViewModel>()
+    val viewModel = viewModel<MovieViewModel>()
     viewModel.id = id
     viewModel.getMovieDetail()
     val state = viewModel.state
@@ -61,7 +60,7 @@ fun MovieDetailScreen(id : Int) {
         Column(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .padding(start = 20.dp, end = 20.dp, bottom = 50.dp, top = 50.dp),
+                .padding(start = 20.dp, end = 20.dp, bottom = 20.dp),
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Text(
@@ -210,4 +209,3 @@ fun BackGroundPoster(details: MovieDetail) {
         )
     }
 }
-

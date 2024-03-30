@@ -7,13 +7,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mhmtn.moviearea2.repo.MovieRepo
-import com.mhmtn.moviearea2.views.MovieListState
+import com.mhmtn.moviearea2.views.MovieState
 import kotlinx.coroutines.launch
 
-class MovieListViewModel : ViewModel() {
+class MovieViewModel : ViewModel() {
 
     private val repo = MovieRepo()
-    var state by mutableStateOf(MovieListState())
+    var state by mutableStateOf(MovieState())
     var id by mutableIntStateOf(0)
     init {
         viewModelScope.launch {
@@ -32,6 +32,19 @@ class MovieListViewModel : ViewModel() {
                     state = state.copy(detailsData = response.body()!!)
                 }
             }catch (e:Exception){
+
+            }
+        }
+    }
+
+    fun getMovieListBySearch(query : String){
+        viewModelScope.launch {
+            try {
+                val response = repo.getMovieListBySearch(query = query)
+                if (response.isSuccessful){
+                    state = state.copy(movies = response.body()!!.data)
+                }
+            } catch (e:Exception){
 
             }
         }

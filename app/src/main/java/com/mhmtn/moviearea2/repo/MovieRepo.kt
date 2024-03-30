@@ -14,4 +14,8 @@ class MovieRepo {
     suspend fun getMovieDetail(id : Int) : Response<MovieDetail>{
         return Retrofit.api.getMovieDetail(id)
     }
+
+    suspend fun getMovieListBySearch(query:String):Response<MovieList>{
+        return Retrofit.api.getMoviesBySearch(query)
+    }
 }

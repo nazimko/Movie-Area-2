@@ -12,23 +12,27 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,45 +41,44 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.mhmtn.moviearea2.R
 import com.mhmtn.moviearea2.models.Data
-import com.mhmtn.moviearea2.viewmodel.MovieListViewModel
+import com.mhmtn.moviearea2.viewmodel.MovieViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieListScreen(navController: NavHostController) {
 
-    val movieListViewModel = viewModel<MovieListViewModel>()
-    val state = movieListViewModel.state
+    val movieViewModel = viewModel<MovieViewModel>()
+    val state = movieViewModel.state
 
     Scaffold (
         modifier = Modifier.background(Color.Transparent),
-        topBar = {
-            TopBar()
-        },
         containerColor = Color.Transparent
     ) {
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            Modifier
-                .padding(it)
-                .fillMaxSize()
-                .background(
-                    Color.Transparent
-                )
-        ){
-            items(state.movies.size){
-                MovieCard(index = it, movieList = state.movies, navController = navController)
+        Column {
+            SearchBar(
+                modifier = Modifier.padding(top = 40.dp)
+            ){
+                movieViewModel.getMovieListBySearch(it)
+            }
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                Modifier
+                    .padding(it)
+                    .fillMaxSize()
+                    .background(
+                        Color.Transparent
+                    )
+            ){
+                items(state.movies.size){
+                    MovieCard(index = it, movieList = state.movies, navController = navController)
+                }
             }
         }
     }
@@ -88,7 +91,7 @@ fun MovieCard(index : Int, movieList : List<Data>, navController: NavHostControl
             .wrapContentSize()
             .padding(10.dp)
             .clickable {
-             navController.navigate("movie_detail_screen/${movieList[index].id}")
+                navController.navigate("movie_detail_screen/${movieList[index].id}")
             },
         elevation = CardDefaults.cardElevation(8.dp)
     ){
@@ -154,4 +157,33 @@ fun TopBar() {
         title = { Text(text = "Movie Area 2", textAlign = TextAlign.Center)},
         colors = TopAppBarDefaults.mediumTopAppBarColors(containerColor = Color.White.copy(0.4f))
         )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SearchBar(modifier: Modifier = Modifier,
+              onSearch : (String) -> Unit = {}
+) {
+    var text = remember { mutableStateOf("") }
+
+    Box (modifier = modifier) {
+        TextField(value = text.value, onValueChange = {
+            text.value=it
+            onSearch(it)
+        },  textStyle = TextStyle(color = MaterialTheme.colorScheme.tertiary),
+            shape = RoundedCornerShape(12.dp),
+            label = { Text(text = "Search Crypto") },
+            placeholder = { Text(text = "Search..") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 10.dp, vertical = 6.dp)
+                .background(color = Color.White, CircleShape),
+            trailingIcon = {
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = "Visibility Icon"
+                )
+            }
+        )
+    }
 }

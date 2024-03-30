@@ -19,6 +19,12 @@ interface MovieAPI {
         @Path("movie_id") id : Int
     ):Response<MovieDetail>
 
+    @GET("movies")
+    suspend fun getMoviesBySearch(
+        @Query("q") search : String
+    ):Response<MovieList>
+
+    //https://moviesapi.ir/api/v1/movies?q=Godfather
 
  //https://moviesapi.ir/api/v1/movies?page=1
  ///api/v1/movies/{movie_id}
