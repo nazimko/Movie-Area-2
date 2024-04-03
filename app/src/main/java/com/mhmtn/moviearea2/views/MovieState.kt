@@ -7,5 +7,8 @@ import com.mhmtn.moviearea2.models.MovieDetail
 data class MovieState(
     val movies: List<Data> = emptyList(),
     val page: Int = 1,
-    val detailsData : MovieDetail = MovieDetail()
-    )
+    val detailsData : MovieDetail = MovieDetail(),
+    val endReached : Boolean = false,
+    val error : String? = null,
+    val isLoading : Boolean = false
+)

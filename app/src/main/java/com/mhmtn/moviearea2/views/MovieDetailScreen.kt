@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -103,7 +104,7 @@ fun TextBuilder(icon: ImageVector, title: String, bodyText: String) {
     Row {
         Icon(
             imageVector = icon,
-            contentDescription = "Person",
+            contentDescription = "",
             tint = Color.White
         )
         Text(
@@ -114,7 +115,8 @@ fun TextBuilder(icon: ImageVector, title: String, bodyText: String) {
             color = Color.White
         )
     }
-    Text(text = bodyText, color = Color.White)
+    Text(text = bodyText, color = Color.White,  maxLines = 3,
+        overflow = TextOverflow.Ellipsis)
 }
 
 @Composable
