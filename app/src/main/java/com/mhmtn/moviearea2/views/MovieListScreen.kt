@@ -195,7 +195,7 @@ fun SearchBar(modifier: Modifier = Modifier,
             onSearch(it)
         },  textStyle = TextStyle(color = MaterialTheme.colorScheme.tertiary),
             shape = RoundedCornerShape(12.dp),
-            label = { Text(text = "Search Crypto") },
+            label = { Text(text = "Search ") },
             placeholder = { Text(text = "Search..") },
             modifier = Modifier
                 .fillMaxWidth()
